@@ -254,6 +254,35 @@
             /* Ajustar navegación */
             .navegacion { right: 10px; gap: 10px; }
         }
+
+/* --- ESTILO DEL BOTÓN DE MÚSICA --- */
+        .btn-musica {
+            position: fixed;
+            bottom: 20px;
+            left: 20px; /* Esquina inferior izquierda */
+            z-index: 9999; /* Por encima de todo */
+            
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            
+            /* Animación suave para que se note que está ahí */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .btn-musica:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 <body>
@@ -384,6 +413,37 @@
         </section>
 
     </main>
+
+    <audio id="audioFondo" loop>
+        <source src="G:\Mi unidad\proyectos\html\140226\sparks.mp3" type="audio/mp3">
+    </audio>
+
+    <button id="botonMusica" class="btn-musica" onclick="toggleMusica()">
+        <span>toca aca</span>
+    </button>
+
+    <script>
+        var audio = document.getElementById("audioFondo");
+        var boton = document.getElementById("botonMusica");
+        var reproduciendo = false;
+
+        // Intentar bajar el volumen un poco para que no asuste (50%)
+        audio.volume = 0.5;
+
+        function toggleMusica() {
+            if (reproduciendo) {
+                audio.pause();
+                boton.innerHTML = "🔇"; // Cambia texto
+                boton.style.opacity = "0.5"; // Se hace semitransparente
+                reproduciendo = false;
+            } else {
+                audio.play();
+                boton.innerHTML = "🔊"; // Cambia texto
+                boton.style.opacity = "1"; // Se ilumina
+                reproduciendo = true;
+            }
+        }
+    </script>
 
 </body>
 </html>
