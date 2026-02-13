@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>un viaje hasta hoy</title>
+    <title>Un viaje hasta hoy</title>
     <style>
+        /* --- RESET Y BASES --- */
         * {
             margin: 0;
             padding: 0;
@@ -15,9 +16,10 @@
             background-color: #000000;
             color: #ffffff;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* Evita scroll doble */
         }
 
+        /* --- CONTENEDOR PRINCIPAL --- */
         .contenedor-scroll {
             height: 100vh;
             overflow-y: scroll;
@@ -29,24 +31,29 @@
             height: 100vh;
             width: 100%;
             scroll-snap-align: start;
-
+            
+            /* Flexbox para centrar contenido */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
             text-align: center;
+            position: relative; /* Para fondos absolutos */
             
-           
-            border-bottom: 1px solid #1a1a1a; 
+            border-bottom: 1px solid #111; 
         }
 
-  
+        /* --- COLORES DE FONDO SUTILES --- */
         #slide1 { background-color: #000000; }
         #slide2 { background-color: #050505; }
-        #slide3 { background-color: #0a0a0a; }
+        #slide3 { background-color: #080808; }
         #slide4 { background-color: #000000; }
+        #slide5 { background-color: #050505; }
+        #slide6 { background-color: #0a0a0a; }
+        #slide7 { background-color: #000000; }
 
+        /* --- TIPOGRAFÍA --- */
         h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
@@ -56,15 +63,83 @@
             -webkit-text-fill-color: transparent;
         }
 
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
         p {
             font-size: 1.2rem;
             color: #ccc;
             max-width: 600px;
             line-height: 1.6;
+            margin-bottom: 20px;
         }
 
+        /* --- NUEVOS ESTILOS PARA IMÁGENES Y TEXTO --- */
+        
+        /* Contenedor dividido (Texto + Imagen) */
+        .split-container {
+            display: flex;
+            flex-direction: row; /* Lado a lado en PC */
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 40px;
+        }
+
+        .texto-lado {
+            flex: 1;
+            text-align: left;
+        }
+
+        .imagen-lado {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Estilo de la imagen */
+        .img-marco {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .img-marco:hover {
+            transform: scale(1.02); /* Efecto zoom suave */
+        }
+
+        /* Imagen de fondo completo */
+        .bg-full {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3; /* Oscurecer imagen para leer texto */
+            z-index: 0;
+        }
+        
+        .contenido-sobre-bg {
+            position: relative;
+            z-index: 1;
+            background: rgba(0,0,0,0.6); /* Caja semitransparente */
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- BOTONES --- */
         .btn {
-            margin-top: 20px;
             padding: 10px 30px;
             border: 1px solid #fff;
             background: transparent;
@@ -73,6 +148,7 @@
             border-radius: 50px;
             transition: all 0.3s ease;
             cursor: pointer;
+            display: inline-block;
         }
 
         .btn:hover {
@@ -80,6 +156,7 @@
             color: #000;
         }
 
+        /* --- NAVEGACIÓN --- */
         .navegacion {
             position: fixed;
             top: 50%;
@@ -104,10 +181,34 @@
             background-color: #fff;
         }
 
-
+        /* --- RESPONSIVE (MÓVILES) --- */
         @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.5rem; }
             p { font-size: 1rem; }
+            
+            /* En móvil, ponemos columna en vez de fila */
+            .split-container {
+                flex-direction: column; 
+                gap: 20px;
+                padding: 0;
+            }
+
+            .texto-lado {
+                text-align: center;
+                order: 2; /* Texto abajo */
+            }
+
+            .imagen-lado {
+                order: 1; /* Imagen arriba */
+                width: 100%;
+            }
+
+            .img-marco {
+                max-width: 80%; /* Imagen no tan grande en celular */
+                max-height: 40vh;
+            }
+
             .navegacion { right: 10px; }
         }
     </style>
@@ -115,40 +216,83 @@
 <body>
 
     <div class="navegacion">
-        <a href="#slide1" class="nav-dot"></a>
-        <a href="#slide2" class="nav-dot"></a>
-        <a href="#slide3" class="nav-dot"></a>
-        <a href="#slide4" class="nav-dot"></a>
+        <a href="#slide1" class="nav-dot" title="Inicio"></a>
+        <a href="#slide2" class="nav-dot" title="El Comienzo"></a>
+        <a href="#slide3" class="nav-dot" title="Desarrollo"></a>
+        <a href="#slide4" class="nav-dot" title="Momento Clave"></a>
+        <a href="#slide5" class="nav-dot" title="Galería"></a>
+        <a href="#slide6" class="nav-dot" title="Estilo"></a>
+        <a href="#slide7" class="nav-dot" title="Contacto"></a>
     </div>
 
     <main class="contenedor-scroll">
         
         <section id="slide1">
-            <h1></h1>
-            <p>Esta es una estructura de diapositivas verticales.</p>
-            <p>Desliza hacia abajo para continuar.</p>
+            <h1>Un viaje hasta hoy</h1>
+            <p>Bienvenido a mi historia personal.</p>
+            <p>Desliza hacia abajo para comenzar.</p>
         </section>
 
         <section id="slide2">
-            <h1>Adaptable</h1>
-            <p>Se ve perfecto en tu celular y en tu computadora gracias al uso de unidades relativas (vh/vw).</p>
+            <div class="split-container">
+                <div class="texto-lado">
+                    <h2>El Comienzo</h2>
+                    <p>Aquí puedes escribir cómo empezó todo. Este diseño coloca el texto a la izquierda en PC y la imagen a la derecha.</p>
+                    <p>En celulares, la imagen se pondrá automáticamente arriba para que se vea bien.</p>
+                </div>
+                <div class="imagen-lado">
+                    <img src="https://placehold.co/600x400/333/fff?text=Foto+1" alt="Foto del comienzo" class="img-marco">
+                </div>
+            </div>
         </section>
 
         <section id="slide3">
-            <h1>Estilo Minimalista</h1>
-            <p>Fondo negro puro para resaltar tus imágenes o texto con alto contraste.</p>
-            <a href="#" class="btn">Saber más</a>
+            <div class="split-container" style="flex-direction: row-reverse;"> <div class="texto-lado">
+                    <h2>Crecimiento</h2>
+                    <p>En esta sección el orden está invertido. La imagen domina el lado izquierdo.</p>
+                    <p>Es ideal para mantener el ritmo visual y que el espectador no se aburra de ver siempre lo mismo.</p>
+                </div>
+                <div class="imagen-lado">
+                    <img src="https://placehold.co/600x400/222/fff?text=Foto+2" alt="Foto de crecimiento" class="img-marco">
+                </div>
+            </div>
         </section>
 
         <section id="slide4">
+            <img src="https://placehold.co/1920x1080/444/fff?text=Fondo+Completo" alt="Fondo" class="bg-full">
+            
+            <div class="contenido-sobre-bg">
+                <h2>Un Momento Clave</h2>
+                <p>A veces una imagen vale más que mil palabras.</p>
+                <p>Este estilo usa la foto como fondo con un filtro oscuro para que puedas leer el texto encima.</p>
+            </div>
+        </section>
+
+        <section id="slide5">
+            <h2>Galería de Recuerdos</h2>
+            <p>Pequeños fragmentos del camino.</p>
+            
+            <div class="split-container" style="margin-top: 20px;">
+                <img src="https://placehold.co/300x300/333/fff?text=Foto+A" class="img-marco" style="max-width: 300px;">
+                <img src="https://placehold.co/300x300/333/fff?text=Foto+B" class="img-marco" style="max-width: 300px;">
+            </div>
+        </section>
+
+        <section id="slide6">
+            <h1>El Presente</h1>
+            <p>Hoy en día, el enfoque es minimalista y directo.</p>
+            <a href="#" class="btn">Ver Proyecto</a>
+        </section>
+
+        <section id="slide7">
             <h1>Contáctanos</h1>
-            <p>Llegaste al final de la presentación.</p>
+            <p>Gracias por recorrer este viaje conmigo.</p>
             <br>
             <p>email@ejemplo.com</p>
+            <a href="#" class="btn">Enviar Mensaje</a>
         </section>
 
     </main>
 
 </body>
-
 </html>
