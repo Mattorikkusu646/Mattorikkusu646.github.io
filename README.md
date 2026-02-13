@@ -1,1 +1,155 @@
 # Mattorikkusu646.github.io
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Vertical Oscuro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .contenedor-scroll {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            
+           
+            border-bottom: 1px solid #1a1a1a; 
+        }
+
+  
+        #slide1 { background-color: #000000; }
+        #slide2 { background-color: #050505; }
+        #slide3 { background-color: #0a0a0a; }
+        #slide4 { background-color: #000000; }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: -webkit-linear-gradient(#fff, #888); 
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 10px 30px;
+            border: 1px solid #fff;
+            background: transparent;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .navegacion {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .nav-dot:hover {
+            background-color: #fff;
+        }
+
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            p { font-size: 1rem; }
+            .navegacion { right: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navegacion">
+        <a href="#slide1" class="nav-dot"></a>
+        <a href="#slide2" class="nav-dot"></a>
+        <a href="#slide3" class="nav-dot"></a>
+        <a href="#slide4" class="nav-dot"></a>
+    </div>
+
+    <main class="contenedor-scroll">
+        
+        <section id="slide1">
+            <h1></h1>
+            <p>Esta es una estructura de diapositivas verticales.</p>
+            <p>Desliza hacia abajo para continuar.</p>
+        </section>
+
+        <section id="slide2">
+            <h1>Adaptable</h1>
+            <p>Se ve perfecto en tu celular y en tu computadora gracias al uso de unidades relativas (vh/vw).</p>
+        </section>
+
+        <section id="slide3">
+            <h1>Estilo Minimalista</h1>
+            <p>Fondo negro puro para resaltar tus imágenes o texto con alto contraste.</p>
+            <a href="#" class="btn">Saber más</a>
+        </section>
+
+        <section id="slide4">
+            <h1>Contáctanos</h1>
+            <p>Llegaste al final de la presentación.</p>
+            <br>
+            <p>email@ejemplo.com</p>
+        </section>
+
+    </main>
+
+</body>
+</html>
