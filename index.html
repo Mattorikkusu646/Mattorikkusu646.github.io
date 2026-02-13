@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>14 febrero 2026</title>
     <style>
+        /* --- RESET Y BASES --- */
         * {
             margin: 0;
             padding: 0;
@@ -15,12 +16,16 @@
             background-color: #000000;
             color: #ffffff;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden; /* Evita scroll doble */
+            overflow: hidden; /* Importante: oculta la barra del body */
         }
 
+        /* --- CONTENEDOR PRINCIPAL --- */
         .contenedor-scroll {
             height: 100vh;
+            width: 100%;
             overflow-y: scroll;
+            
+            /* LA MAGIA DEL SCROLL */
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
         }
@@ -28,275 +33,302 @@
         section {
             height: 100vh;
             width: 100%;
-            scroll-snap-align: start;
             
-            /* Flexbox para centrar contenido */
+            /* OBLIGATORIO: Detenerse en cada slide */
+            scroll-snap-align: start;
+            scroll-snap-stop: always; /* <--- ESTO EVITA QUE TE SALTES PAGINAS */
+            
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px;
             text-align: center;
-            position: relative; /* Para fondos absolutos */
-            
+            position: relative;
             border-bottom: 1px solid #111; 
+            overflow: hidden; /* Evita que imágenes gigantes rompan el slide */
         }
 
-        #slide1 { background-color: #000000; }
-        #slide2 { background-color: #050505; }
-        #slide3 { background-color: #080808; }
-        #slide4 { background-color: #000000; }
-        #slide5 { background-color: #050505; }
-        #slide6 { background-color: #0a0a0a; }
-        #slide7 { background-color: #000000; }
+        /* --- COLORES ALTERNOS PARA DAR PROFUNDIDAD --- */
+        section:nth-child(odd) { background-color: #000000; }
+        section:nth-child(even) { background-color: #050505; }
 
+        /* --- TIPOGRAFÍA --- */
         h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
             background: -webkit-linear-gradient(#fff, #888); 
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
         h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
             color: #fff;
         }
 
         p {
             font-size: 1.2rem;
             color: #ccc;
-            max-width: 600px;
+            max-width: 700px;
             line-height: 1.6;
             margin-bottom: 20px;
         }
 
+        /* --- ESTRUCTURAS (LAYOUTS) --- */
+        
+        /* 1. Contenedor dividido (Texto + Imagen) */
         .split-container {
             display: flex;
-            flex-direction: row; /* Lado a lado en PC */
+            flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 40px;
+            gap: 50px;
             max-width: 1200px;
             width: 100%;
-            padding: 0 40px;
         }
 
-        .texto-lado {
-            flex: 1;
-            text-align: left;
-        }
+        .texto-lado { flex: 1; text-align: left; }
+        .imagen-lado { flex: 1; display: flex; justify-content: center; }
 
-        .imagen-lado {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* Estilo de la imagen */
+        /* 2. Imágenes con estilo */
         .img-marco {
             width: 100%;
             max-width: 500px;
             height: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.05);
             object-fit: cover;
             transition: transform 0.3s ease;
         }
+        .img-marco:hover { transform: scale(1.02); }
 
-        .img-marco:hover {
-            transform: scale(1.02); /* Efecto zoom suave */
-        }
-
-        /* Imagen de fondo completo */
+        /* 3. Imagen de fondo completo */
         .bg-full {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
-            opacity: 0.3; /* Oscurecer imagen para leer texto */
+            opacity: 0.25; /* Oscurecida para leer texto */
             z-index: 0;
         }
         
-        .contenido-sobre-bg {
+        .contenido-flotante {
             position: relative;
             z-index: 1;
-            background: rgba(0,0,0,0.6); /* Caja semitransparente */
+            background: rgba(0,0,0,0.7);
             padding: 40px;
             border-radius: 20px;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
+
+        /* 4. Galería Grid (Cuadrícula) */
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+            gap: 20px;
+            max-width: 1000px;
+            margin-top: 30px;
+        }
+        .galeria-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .galeria-img:hover { opacity: 1; }
 
         /* --- BOTONES --- */
         .btn {
-            padding: 10px 30px;
-            border: 1px solid #fff;
-            background: transparent;
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 35px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.05);
             color: #fff;
             text-decoration: none;
             border-radius: 50px;
             transition: all 0.3s ease;
-            cursor: pointer;
-            display: inline-block;
+            font-size: 1rem;
         }
+        .btn:hover { background: #fff; color: #000; border-color: #fff; }
 
-        .btn:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        /* --- NAVEGACIÓN --- */
+        /* --- NAVEGACIÓN (PUNTOS) --- */
         .navegacion {
             position: fixed;
-            top: 50%;
-            right: 20px;
+            top: 50%; right: 25px;
             transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 10;
+            display: flex; flex-direction: column; gap: 15px;
+            z-index: 100;
         }
-
         .nav-dot {
-            width: 12px;
-            height: 12px;
-            background-color: rgba(255, 255, 255, 0.3);
+            width: 10px; height: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            text-decoration: none;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
         }
-
-        .nav-dot:hover {
+        .nav-dot:hover, .nav-dot:focus {
             background-color: #fff;
+            transform: scale(1.3);
         }
 
-        /* --- RESPONSIVE (MÓVILES) --- */
+        /* --- ADAPTABILIDAD MÓVIL (RESPONSIVE) --- */
         @media (max-width: 768px) {
             h1 { font-size: 2.2rem; }
-            h2 { font-size: 1.5rem; }
-            p { font-size: 1rem; }
-            
-            /* En móvil, ponemos columna en vez de fila */
+            h2 { font-size: 1.6rem; }
+            p { font-size: 1rem; text-align: center; margin-bottom: 15px; }
+            section { padding: 20px; }
+
+            /* En celular: Columna vertical (Imagen arriba, texto abajo) */
             .split-container {
-                flex-direction: column; 
+                flex-direction: column;
                 gap: 20px;
-                padding: 0;
-            }
-
-            .texto-lado {
                 text-align: center;
-                order: 2; /* Texto abajo */
             }
+            
+            /* Reordenamos para que la imagen siempre quede arriba del texto */
+            .imagen-lado { order: 1; width: 100%; }
+            .texto-lado { order: 2; text-align: center; }
 
-            .imagen-lado {
-                order: 1; /* Imagen arriba */
-                width: 100%;
-            }
+            /* Ajustes de imágenes en móvil */
+            .img-marco { max-height: 250px; width: auto; max-width: 100%; }
+            
+            /* Galería en móvil: 1 o 2 columnas en vez de 3 */
+            .galeria-grid { grid-template-columns: repeat(2, 1fr); }
+            .galeria-img { height: 120px; }
 
-            .img-marco {
-                max-width: 80%; /* Imagen no tan grande en celular */
-                max-height: 40vh;
-            }
-
-            .navegacion { right: 10px; }
+            /* Ajustar navegación */
+            .navegacion { right: 10px; gap: 10px; }
         }
     </style>
 </head>
 <body>
 
     <div class="navegacion">
-        <a href="#slide1" class="nav-dot" title="Inicio"></a>
-        <a href="#slide2" class="nav-dot" title="El Comienzo"></a>
-        <a href="#slide3" class="nav-dot" title="Desarrollo"></a>
-        <a href="#slide4" class="nav-dot" title="Momento Clave"></a>
-        <a href="#slide5" class="nav-dot" title="Galería"></a>
-        <a href="#slide6" class="nav-dot" title="Estilo"></a>
-        <a href="#slide7" class="nav-dot" title="Contacto"></a>
+        <a href="#slide1" class="nav-dot"></a>
+        <a href="#slide2" class="nav-dot"></a>
+        <a href="#slide3" class="nav-dot"></a>
+        <a href="#slide4" class="nav-dot"></a>
+        <a href="#slide5" class="nav-dot"></a>
+        <a href="#slide6" class="nav-dot"></a>
+        <a href="#slide7" class="nav-dot"></a>
+        <a href="#slide8" class="nav-dot"></a>
+        <a href="#slide9" class="nav-dot"></a>
+        <a href="#slide10" class="nav-dot"></a>
     </div>
 
     <main class="contenedor-scroll">
         
         <section id="slide1">
-            <h1>Hola cariño</h1>
+           <h1>Hola cariño</h1>
             <p>Bienvenido a mi pequeño reemember de todo</p>
             <p>lo que pasamos hasta hoy 14 de febrero, ya</p>
             <p>2 años y 4 meses juntos. siendo una fecha </p>
             <p>asi de importante, no esperaba hacer menos </p>
             <p>que hacer un pequeño viaje conmigo recordando</p>
             <p> los mejores momentos juntos en estos casi 2 </p>
-            <p>años y medio juntos, espero lo disfrutes <3</p>
-            <p></p>
-            <p></p>
-            <p>desplaza hacia abajo</p>
+            <p>años y medio juntos, espero lo disfrutes <3 </p>
+            <p style="font-size: 0.9rem; opacity: 0.6;">(Desliza hacia abajo)</p>
         </section>
 
         <section id="slide2">
             <div class="split-container">
                 <div class="texto-lado">
-                    <h2>El Comienzo</h2>
-                    <p>Aquí puedes escribir cómo empezó todo. Este diseño coloca el texto a la izquierda en PC y la imagen a la derecha.</p>
-                    <p>En celulares, la imagen se pondrá automáticamente arriba para que se vea bien.</p>
+                    <h2>El Origen</h2>
+                    <p>Todo comenzó con una idea pequeña. Aquí puedes contar dónde naciste, o cómo empezó tu proyecto.</p>
                 </div>
                 <div class="imagen-lado">
-                    <img src="https://placehold.co/600x400/333/fff?text=Foto+1" alt="Foto del comienzo" class="img-marco">
+                    <img src="https://placehold.co/600x400/333/fff?text=Foto+Origen" class="img-marco">
                 </div>
             </div>
         </section>
 
         <section id="slide3">
-            <div class="split-container" style="flex-direction: row-reverse;"> <div class="texto-lado">
-                    <h2>Crecimiento</h2>
-                    <p>En esta sección el orden está invertido. La imagen domina el lado izquierdo.</p>
-                    <p>Es ideal para mantener el ritmo visual y que el espectador no se aburra de ver siempre lo mismo.</p>
-                </div>
+            <div class="split-container">
                 <div class="imagen-lado">
-                    <img src="https://placehold.co/600x400/222/fff?text=Foto+2" alt="Foto de crecimiento" class="img-marco">
+                    <img src="https://placehold.co/600x400/222/fff?text=Aprendizaje" class="img-marco">
+                </div>
+                <div class="texto-lado">
+                    <h2>Aprendizaje</h2>
+                    <p>Los años de formación fueron clave. Describe aquí tus estudios o primeros desafíos superados.</p>
                 </div>
             </div>
         </section>
 
         <section id="slide4">
-            <img src="https://placehold.co/1920x1080/444/fff?text=Fondo+Completo" alt="Fondo" class="bg-full">
-            
-            <div class="contenido-sobre-bg">
-                <h2>Un Momento Clave</h2>
-                <p>A veces una imagen vale más que mil palabras.</p>
-                <p>Este estilo usa la foto como fondo con un filtro oscuro para que puedas leer el texto encima.</p>
+            <img src="https://placehold.co/1920x1080/444/fff?text=Paisaje+Fondo" class="bg-full">
+            <div class="contenido-flotante">
+                <h2>Un Momento Decisivo</h2>
+                <p>"La creatividad es la inteligencia divirtiéndose."</p>
             </div>
         </section>
 
         <section id="slide5">
-            <h2>Galería de Recuerdos</h2>
-            <p>Pequeños fragmentos del camino.</p>
-            
-            <div class="split-container" style="margin-top: 20px;">
-                <img src="https://placehold.co/300x300/333/fff?text=Foto+A" class="img-marco" style="max-width: 300px;">
-                <img src="https://placehold.co/300x300/333/fff?text=Foto+B" class="img-marco" style="max-width: 300px;">
+            <div class="split-container">
+                <div class="texto-lado">
+                    <h2>Pasiones</h2>
+                    <p>Más allá del trabajo, esto es lo que me mueve: música, tecnología, videojuegos o viajes.</p>
+                </div>
+                <div class="imagen-lado">
+                    <img src="https://placehold.co/600x400/111/fff?text=Hobby" class="img-marco">
+                </div>
             </div>
         </section>
 
         <section id="slide6">
-            <h1>El Presente</h1>
-            <p>Hoy en día, el enfoque es minimalista y directo.</p>
-            <a href="#" class="btn">Ver Proyecto</a>
+            <h2>Galería</h2>
+            <p>Pequeños fragmentos visuales.</p>
+            <div class="galeria-grid">
+                <img src="https://placehold.co/300x200/222/fff?text=1" class="galeria-img">
+                <img src="https://placehold.co/300x200/333/fff?text=2" class="galeria-img">
+                <img src="https://placehold.co/300x200/444/fff?text=3" class="galeria-img">
+                <img src="https://placehold.co/300x200/555/fff?text=4" class="galeria-img">
+                <img src="https://placehold.co/300x200/666/fff?text=5" class="galeria-img">
+                <img src="https://placehold.co/300x200/777/fff?text=6" class="galeria-img">
+            </div>
         </section>
 
         <section id="slide7">
-            <h1>Contáctanos</h1>
-            <p>Gracias por recorrer este viaje conmigo.</p>
-            <br>
-            <p>email@ejemplo.com</p>
-            <a href="#" class="btn">Enviar Mensaje</a>
+            <h2>Logros Recientes</h2>
+            <img src="https://placehold.co/800x300/222/fff?text=Banner+Logros" class="img-marco" style="height: 250px; object-fit: cover; margin: 20px 0;">
+            <p>Un resumen de lo conseguido en el último año. Proyectos terminados y metas alcanzadas.</p>
+        </section>
+
+        <section id="slide8">
+            <div class="split-container">
+                <div class="imagen-lado">
+                    <img src="https://placehold.co/600x400/000/fff?text=Futuro" class="img-marco">
+                </div>
+                <div class="texto-lado">
+                    <h2>Hacia el Futuro</h2>
+                    <p>La mirada puesta en nuevos horizontes. ¿Cuál es el siguiente gran paso?</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide9">
+            <h1 style="font-size: 4rem; opacity: 0.2;">❝</h1>
+            <h2 style="font-style: italic;">"El único modo de hacer un gran trabajo es amar lo que haces."</h2>
+            <p>- Steve Jobs</p>
+        </section>
+
+        <section id="slide10">
+            <h1>Contacto</h1>
+            <p>Gracias por llegar hasta aquí.</p>
+            <div style="margin-top: 30px;">
+                <a href="#" class="btn">Instagram</a>
+                <a href="#" class="btn">Email</a>
+                <a href="#" class="btn">LinkedIn</a>
+            </div>
         </section>
 
     </main>
 
 </body>
 </html>
-
-
-
