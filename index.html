@@ -1,22 +1,18 @@
-s<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>14 febrero 2026</title>
+    <title>reemember-14/02/26</title>
     <style>
         /* --- RESET Y BASES --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: #000000;
             color: #ffffff;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden; /* Importante: oculta la barra del body */
+            overflow: hidden; 
         }
 
         /* --- CONTENEDOR PRINCIPAL --- */
@@ -24,8 +20,6 @@ s<!DOCTYPE html>
             height: 100vh;
             width: 100%;
             overflow-y: scroll;
-            
-            /* LA MAGIA DEL SCROLL */
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
         }
@@ -33,11 +27,8 @@ s<!DOCTYPE html>
         section {
             height: 100vh;
             width: 100%;
-            
-            /* OBLIGATORIO: Detenerse en cada slide */
             scroll-snap-align: start;
-            scroll-snap-stop: always; /* <--- ESTO EVITA QUE TE SALTES PAGINAS */
-            
+            scroll-snap-stop: always;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,12 +37,36 @@ s<!DOCTYPE html>
             text-align: center;
             position: relative;
             border-bottom: 1px solid #111; 
-            overflow: hidden; /* Evita que imágenes gigantes rompan el slide */
+            overflow: hidden;
         }
 
-        /* --- COLORES ALTERNOS PARA DAR PROFUNDIDAD --- */
         section:nth-child(odd) { background-color: #000000; }
         section:nth-child(even) { background-color: #050505; }
+
+        /* --- ANIMACIONES DE ENTRADA --- */
+        section h1, section h2, section p, section .media-marco, section .btn, section .galeria-grid, section .flip-card, section .video-wrapper {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        section.visible h1, 
+        section.visible h2, 
+        section.visible p, 
+        section.visible .media-marco, 
+        section.visible .btn,
+        section.visible .galeria-grid,
+        section.visible .flip-card,
+        section.visible .video-wrapper {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Retrasos en cascada */
+        section.visible h1, section.visible h2 { transition-delay: 0.1s; }
+        section.visible p { transition-delay: 0.3s; }
+        section.visible .media-marco, section.visible .galeria-grid, section.visible .flip-card, section.visible .video-wrapper { transition-delay: 0.5s; }
+        section.visible .btn { transition-delay: 0.7s; }
 
         /* --- TIPOGRAFÍA --- */
         h1 {
@@ -63,24 +78,10 @@ s<!DOCTYPE html>
             -webkit-text-fill-color: transparent;
             line-height: 1.2;
         }
+        h2 { font-size: 2.2rem; margin-bottom: 20px; color: #fff; }
+        p { font-size: 1.2rem; color: #ccc; max-width: 700px; line-height: 1.6; margin-bottom: 20px; }
 
-        h2 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        p {
-            font-size: 1.2rem;
-            color: #ccc;
-            max-width: 700px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        /* --- ESTRUCTURAS (LAYOUTS) --- */
-        
-        /* 1. Contenedor dividido (Texto + Imagen) */
+        /* --- LAYOUTS --- */
         .split-container {
             display: flex;
             flex-direction: row;
@@ -90,207 +91,317 @@ s<!DOCTYPE html>
             max-width: 1200px;
             width: 100%;
         }
-
         .texto-lado { flex: 1; text-align: left; }
         .imagen-lado { flex: 1; display: flex; justify-content: center; }
 
-        /* 2. Imágenes con estilo */
-        .img-marco {
+        /* --- IMÁGENES Y VIDEOS SIMPLES --- */
+        .media-marco {
             width: 100%;
             max-width: 500px;
             height: auto;
+            max-height: 400px; 
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(255, 255, 255, 0.05);
             object-fit: cover;
             transition: transform 0.3s ease;
+            background: #111;
+            cursor: pointer; /* Corregido: Sin símbolos extraños */
         }
-        .img-marco:hover { transform: scale(1.02); }
+        .media-marco:hover { transform: scale(1.02); }
+        video.media-marco:focus { outline: none; }
 
-        /* 3. Imagen de fondo completo */
         .bg-full {
-            position: absolute;
-            top: 0; left: 0;
+            position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0.25; /* Oscurecida para leer texto */
-            z-index: 0;
+            object-fit: cover; opacity: 0.25; z-index: 0;
         }
         
         .contenido-flotante {
-            position: relative;
-            z-index: 1;
-            background: rgba(0,0,0,0.7);
-            padding: 40px;
+            position: relative; z-index: 1;
+            background: rgba(0,0,0,0.7); padding: 40px;
             border-radius: 20px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* 4. Galería Grid (Cuadrícula) */
+        /* --- GRID DE LA GALERÍA --- */
         .galeria-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr); /* 3 columnas */
             gap: 20px;
             max-width: 1000px;
+            width: 100%;
             margin-top: 30px;
         }
-        .galeria-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-        .galeria-img:hover { opacity: 1; }
 
-        /* --- BOTONES --- */
+        /* --- ESTILOS DE LA FOTO GIRATORIA (FLIP CARD) --- */
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 200px; /* IMPORTANTE: Altura fija para que no desaparezcan */
+            perspective: 1000px;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+
+        /* Ajuste para tarjetas grandes en split-container */
+        .imagen-lado .flip-card {
+             height: auto;
+             aspect-ratio: 4/3;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .flip-card-inner.girada {
+            transform: rotateY(180deg);
+        }
+
+        .flip-front, .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 15px;
+        }
+
+        .flip-front img, .flip-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .flip-back {
+            transform: rotateY(180deg);
+            background-color: #222; /* Fondo gris por si falla la imagen */
+        }
+
+        /* --- ESTILOS DE LA LENGÜETA (PESTAÑA) --- */
+        .video-wrapper {
+            position: relative; 
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.05);
+            background: #000;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .panel-oculto {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .panel-oculto img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .video-wrapper.mostrar-foto .panel-oculto {
+            transform: translateX(0);
+        }
+
+        .lengueta {
+            position: absolute;
+            top: 20px; right: 0;
+            background-color: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(5px);
+            color: #fff;
+            padding: 10px 15px 10px 12px;
+            border-radius: 10px 0 0 10px;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            box-shadow: -2px 2px 10px rgba(0,0,0,0.3);
+            border-left: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .lengueta:hover {
+            padding-right: 25px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- BOTONES Y NAVEGACIÓN --- */
         .btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 35px;
+            display: inline-block; margin-top: 15px; padding: 12px 35px;
             border: 1px solid rgba(255,255,255,0.3);
             background: rgba(255,255,255,0.05);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+            color: #fff; text-decoration: none; border-radius: 50px;
+            transition: all 0.3s ease; font-size: 1rem;
         }
         .btn:hover { background: #fff; color: #000; border-color: #fff; }
 
-        /* --- NAVEGACIÓN (PUNTOS) --- */
         .navegacion {
-            position: fixed;
-            top: 50%; right: 25px;
+            position: fixed; top: 50%; right: 25px;
             transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 15px;
-            z-index: 100;
+            display: flex; flex-direction: column; gap: 15px; z-index: 100;
         }
         .nav-dot {
             width: 10px; height: 10px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.2); 
+            border-radius: 50%; transition: all 0.3s;
         }
-        .nav-dot:hover, .nav-dot:focus {
-            background-color: #fff;
-            transform: scale(1.3);
+        .nav-dot:hover { background-color: #fff; transform: scale(1.3); }
+        .nav-dot.activo {
+            background-color: #ffffff;
+            transform: scale(1.4);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* --- INDICADOR DE SCROLL (NUEVO) --- */
         .indicador-scroll {
-            position: absolute;
-            bottom: 40px; /* Separación del fondo */
-            left: 50%;
-            transform: translateX(-50%); /* Centrado perfecto */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0.6; /* Sutil, no llama mucho la atención */
-            transition: opacity 0.3s;
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0.6; transition: opacity 0.3s;
         }
-
-        .indicador-scroll:hover {
-            opacity: 1;
-        }
-
-        .texto-scroll {
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-
-        /* Dibujo de la flecha con CSS puro */
         .flecha-abajo {
-            width: 15px;
-            height: 15px;
-            border-right: 2px solid #fff;
-            border-bottom: 2px solid #fff;
-            transform: rotate(45deg); /* Giramos un cuadrado para hacer la flecha */
-            animation: rebote 2s infinite; /* La animación */
+            width: 15px; height: 15px;
+            border-right: 2px solid #fff; border-bottom: 2px solid #fff;
+            transform: rotate(45deg); animation: rebote 2s infinite;
         }
-
-        /* Animación del rebote */
         @keyframes rebote {
-            0%, 20%, 50%, 80%, 100% {
-                transform: rotate(45deg) translate(0, 0);
-            }
-            40% {
-                transform: rotate(45deg) translate(-10px, -10px);
-            }
-            60% {
-                transform: rotate(45deg) translate(-5px, -5px);
-            }
+            0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translate(0, 0); }
+            40% { transform: rotate(45deg) translate(-10px, -10px); }
+            60% { transform: rotate(45deg) translate(-5px, -5px); }
         }
 
-        /* --- ADAPTABILIDAD MÓVIL (RESPONSIVE) --- */
+        .btn-musica {
+            position: fixed; bottom: 20px; left: 20px; z-index: 9999;
+            background: rgba(255, 255, 255, 0.1); color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px; border-radius: 30px; cursor: pointer;
+            backdrop-filter: blur(5px); font-family: 'Segoe UI', sans-serif;
+            font-size: 0.9rem; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .btn-musica:hover { background: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            h1 { font-size: 2.2rem; }
-            h2 { font-size: 1.6rem; }
+            h1 { font-size: 2.2rem; } h2 { font-size: 1.6rem; }
             p { font-size: 1rem; text-align: center; margin-bottom: 15px; }
             section { padding: 20px; }
-
-            /* En celular: Columna vertical (Imagen arriba, texto abajo) */
-            .split-container {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            /* Reordenamos para que la imagen siempre quede arriba del texto */
+            .split-container { flex-direction: column; gap: 20px; text-align: center; }
             .imagen-lado { order: 1; width: 100%; }
             .texto-lado { order: 2; text-align: center; }
-
-            /* Ajustes de imágenes en móvil */
-            .img-marco { max-height: 250px; width: auto; max-width: 100%; }
-            
-            /* Galería en móvil: 1 o 2 columnas en vez de 3 */
+            .media-marco { max-height: 250px; width: auto; max-width: 100%; }
+            /* Galería en móvil: 2 columnas */
             .galeria-grid { grid-template-columns: repeat(2, 1fr); }
-            .galeria-img { height: 120px; }
-
-            /* Ajustar navegación */
+            .flip-card { height: 150px; } /* Un poco más pequeñas en móvil */
             .navegacion { right: 10px; gap: 10px; }
         }
 
-/* --- ESTILO DEL BOTÓN DE MÚSICA --- */
-        .btn-musica {
-            position: fixed;
-            bottom: 20px;
-            left: 20px; /* Esquina inferior izquierda */
-            z-index: 9999; /* Por encima de todo */
-            
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            
-            /* Animación suave para que se note que está ahí */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+/* --- ESTILOS DEL REGALO Y CARRUSEL --- */
+        .contenedor-regalo {
+            width: 100%;
+            max-width: 600px;
+            min-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            flex-direction: column;
         }
 
-        .btn-musica:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
+        /* La caja de regalo */
+        #caja-regalo {
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s;
         }
+        
+        /* Animación de temblor al tocar */
+        @keyframes temblor {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(10deg) scale(1.1); }
+            50% { transform: rotate(0deg) scale(1); }
+            75% { transform: rotate(-10deg) scale(1.1); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+        
+        .temblando {
+            animation: temblor 0.3s;
+        }
+
+        /* El Carrusel (oculto al principio) */
+        #carrusel-sorpresa {
+            display: none; /* Se activa con JS */
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            animation: aparecerSuave 1s ease forwards;
+        }
+
+        @keyframes aparecerSuave {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .visor-carrusel {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(255,255,255,0.1);
+        }
+
+        .visor-carrusel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Flechas de navegación */
+        .btn-nav-carrusel {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        .btn-nav-carrusel:hover { background: rgba(255,255,255,0.3); }
+        .prev { left: 10px; }
+        .next { right: 10px; }
 
     </style>
 </head>
 <body>
 
     <div class="navegacion">
-        <a href="#slide1" class="nav-dot"></a>
-        <a href="#slide2" class="nav-dot"></a>
-        <a href="#slide3" class="nav-dot"></a>
+        <a href="#holasivesestoteamo" class="nav-dot"></a>
+        <a href="#mibendicionalconocerte" class="nav-dot"></a>
+        <a href="#aquisolofuiunniñoenamorado" class="nav-dot"></a>
         <a href="#slide4" class="nav-dot"></a>
         <a href="#slide5" class="nav-dot"></a>
         <a href="#slide6" class="nav-dot"></a>
@@ -302,104 +413,258 @@ s<!DOCTYPE html>
 
     <main class="contenedor-scroll">
         
-       <section id="slide1">
+       <section id="holasivesestoteamo">
             <div style="z-index: 1;">
-                <h1>Hola cariño</h1>
-                <p>Bienvenido a mi pequeño reemember de todo</p>
+                <h1>Hola mi linda Stacy</h1>
+                <p>Bienvenida a nuestro album de recuerdos de</p>
                 <p>lo que pasamos hasta hoy 14 de febrero, ya</p>
                 <p>2 años y 4 meses juntos. siendo una fecha </p>
                 <p>asi de importante, no esperaba hacer menos </p>
                 <p>que hacer un pequeño viaje conmigo recordando</p>
                 <p> los mejores momentos juntos en estos casi 2 </p>
-                <p>años y medio juntos, espero lo disfrutes <3 </p>
-                </div>
-
+                <p>años y medio juntos siendo la razon de seguir</p>
+                <p>adelante dia con dia, espero lo disfrutes amor<3</p>
+            </div>
             <div class="indicador-scroll">
-                <span class="texto-scroll"
-                style="font-size: 0.9rem; opacity: 0.6;">Desliza hacia abajo</span>
+                <span class="texto-scroll" style="font-size: 0.9rem; opacity: 0.6;">Desliza hacia abajo</span>
                 <div class="flecha-abajo"></div>
             </div>
         </section>
 
-        <section id="slide2">
+        <section id="mibendicionalconocerte">
             <div class="split-container">
                 <div class="texto-lado">
-                    <h2>El Origen</h2>
-                    <p>Todo comenzó con una idea pequeña. Aquí puedes contar dónde naciste, o cómo empezó tu proyecto.</p>
+                    <h2>8/11/23</h2>
+                    <p>Hablando de esta fecha realmente no fue el inicio pero la primera cita formal que tuvimos, genuinamente me sentia muy nervioso. No sabia como estariamos juntos en el cine cuando en la primera salida no congeniamos mucho mas alla de los detalles, pero sin duda alguna es la primera vez que me senti como un niño enamorado e inocente a tu lado. sin duda no tengo mucho mas que decir que fue increible como conectamos esta vez y como fuiste una increible primera cita a mi lado <3</p>
                 </div>
                 <div class="imagen-lado">
-                    <img src="https://placehold.co/600x400/333/fff?text=Foto+Origen" class="img-marco">
+                    <div class="flip-card" onclick="girarFoto(this)">
+                        <div class="flip-card-inner">
+                            <div class="flip-front">
+                                <img src="imagen1.jpg" alt="Frente">
+                            </div>
+                            <div class="flip-back">
+                                <img src="imagen1.2.jpg" alt="Atras">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="slide3">
+        <section id="aquisolofuiunniñoenamorado">
             <div class="split-container">
                 <div class="imagen-lado">
-                    <img src="https://placehold.co/600x400/222/fff?text=Aprendizaje" class="img-marco">
+                    <div class="video-wrapper">
+                        <video class="video-personal" onclick="toggleVideo(this)">
+                            <source src="vid2.mp4" type="video/mp4">
+                        </video>
+                        <div class="panel-oculto">
+                            <img src="imagen2.jpg">
+                        </div>
+                        <div class="lengueta" onclick="toggleLengueta(this)">
+                            <span>➡️</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="texto-lado">
-                    <h2>Aprendizaje</h2>
-                    <p>Los años de formación fueron clave. Describe aquí tus estudios o primeros desafíos superados.</p>
+                    <h2>Fechas con mucha emocion :OOO</h2>
+                    <p>pasamos 3 meses al futuro, aqui conocias a mi mama aunque con verguenza y pavor de que fuera a decir. pero tu bien decidida de querer estar conmigo y conocer a mi familia, incluyendo la llegada de alguien muy especial para mi como lo es caramelo. parte vital de quien soy a dia de hoy y de lo que soy capaz por una mascota, fuera de la nostalgia que pueda sentir se que fuimos lindos papas para el y que nos mira crecer dia con dia como pareja, como persona y sobre todo la linda vibra que dejamos como pareja a lo largo del tiempo hasta aqui :oo </p>
                 </div>
             </div>
         </section>
 
         <section id="slide4">
-            <img src="https://placehold.co/1920x1080/444/fff?text=Paisaje+Fondo" class="bg-full">
-            <div class="contenido-flotante">
-                <h2>Un Momento Decisivo</h2>
-                <p>"La creatividad es la inteligencia divirtiéndose."</p>
+            <img src="imagen4.jpg" class="bg-full">
+            <div class="split-container" style="position: relative; z-index: 2;">
+                <div class="imagen-lado">
+                    <div class="flip-card" onclick="girarFoto(this)">
+                        <div class="flip-card-inner">
+                            <div class="flip-front">
+                                <img src="imagen3.2.jpg">
+                            </div>
+                            <div class="flip-back">
+                                <img src="imagen3.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="texto-lado">
+                    <div class="contenido-flotante" style="text-align: left;">
+                        <h2>salidas cansadas pero divertidas :DDD</h2>
+                       <p>"La primera vez que salimos cono norte y centro para explorar un poco mas de lima juntos, valla dia para agotador, los recuerdos que me vienen a la mente son de ti quejandote de la pata y yo riendome pero buscando manera de ayudarte sin dejarte sin pie ASKLFJALKSFJ. un lindo dia juntos fuera lo del calor, las largas caminatas y que nos hayan tumbado nuestro candado >:v. fuera todo eso fue un maravilloso dia junto a una chica tan linda como tu saliendo en estas fotos :OOOO <333"</p>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section id="slide5">
             <div class="split-container">
-                <div class="texto-lado">
-                    <h2>Pasiones</h2>
-                    <p>Más allá del trabajo, esto es lo que me mueve: música, tecnología, videojuegos o viajes.</p>
-                </div>
                 <div class="imagen-lado">
-                    <img src="https://placehold.co/600x400/111/fff?text=Hobby" class="img-marco">
+                    <div class="video-wrapper">
+                        <video class="video-personal" onclick="toggleVideo(this)">
+                            <source src="vid5.mp4" type="video/mp4">
+                        </video>
+                        <div class="panel-oculto">
+                            <img src="imagen5.jpg">
+                        </div>
+                        <div class="lengueta" onclick="toggleLengueta(this)">
+                            <span>➡️</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="texto-lado">
+                    <h2>La cita mas Producida que tuvimos:OOOOO</h2>
+                    <p>Si solo lo vieramos a simple vista no veriamos lo muy importante que fue para los 2, septiempre un mes vital en nosotros necesitaba una sorpresa y termino siendolo para los 2. ese dia me quede sin palabras de todo lo que sentia al ver lo feliz que te veias, quise que fuera inolvidable para ti tanto como siento lo fue para mi. el simple hecho de verte despreocupada y riendo conmigo te hizo realmente disfrutar tu cumple pero tambien me hizo el hombre mas feliz del mundo solo viendote brillar cariño <33 </p>
                 </div>
             </div>
         </section>
 
         <section id="slide6">
-            <h2>Galería</h2>
-            <p>Pequeños fragmentos visuales.</p>
+            <h2>algunas fotitos mas aca :O</h2>
+            <p>todas tienen algo valioso que las hace unicas y especiales para mi y espero que para ti tambien <3</p>
+            
             <div class="galeria-grid">
-                <img src="https://placehold.co/300x200/222/fff?text=1" class="galeria-img">
-                <img src="https://placehold.co/300x200/333/fff?text=2" class="galeria-img">
-                <img src="https://placehold.co/300x200/444/fff?text=3" class="galeria-img">
-                <img src="https://placehold.co/300x200/555/fff?text=4" class="galeria-img">
-                <img src="https://placehold.co/300x200/666/fff?text=5" class="galeria-img">
-                <img src="https://placehold.co/300x200/777/fff?text=6" class="galeria-img">
+                <div class="flip-card" onclick="girarFoto(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <img src="gal1.jpg">
+                        </div>
+                        <div class="flip-back">
+                            <img src="gal1.2.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" onclick="girarFoto(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <img src="gal2.jpg">
+                        </div>
+                        <div class="flip-back">
+                            <img src="gal2.2.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" onclick="girarFoto(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <img src="gal3.jpg">
+                        </div>
+                        <div class="flip-back">
+                            <img src="gal3.2.gif">
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" onclick="girarFoto(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <img src="gal4.jpg">
+                        </div>
+                        <div class="flip-back">
+                            <img src="gal4.2.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" onclick="girarFoto(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <img src="gal5.jpg">
+                        </div>
+                        <div class="flip-back">
+                            <img src="gal5.2.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" onclick="girarFoto(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <img src="gal6.jpg">
+                        </div>
+                        <div class="flip-back">
+                            <img src="gal6.2.jpg">
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="slide7">
-            <h2>Logros Recientes</h2>
-            <img src="https://placehold.co/800x300/222/fff?text=Banner+Logros" class="img-marco" style="height: 250px; object-fit: cover; margin: 20px 0;">
-            <p>Un resumen de lo conseguido en el último año. Proyectos terminados y metas alcanzadas.</p>
+<section id="slide7">
+            <h2>te a llegado un regalo misterioso</h2>
+            <p>abrelo para saber que hay en su interior :OOO</p>
+
+            <div class="contenedor-regalo">
+                
+                <div id="caja-regalo" onclick="golpearRegalo()">
+                    <div style="font-size: 8rem;">🎁</div>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #aaa;">(Toca 3 veces para abrir)</p>
+                </div>
+
+                <div id="carrusel-sorpresa">
+                    <div class="visor-carrusel">
+                        <button class="btn-nav-carrusel prev" onclick="moverCarrusel(-1)">❮</button>
+                        
+                        <img id="img-carrusel" src="gat1.jpg">
+                        
+                        <button class="btn-nav-carrusel next" onclick="moverCarrusel(1)">❯</button>
+                    </div>
+                    <p id="txt-carrusel" style="margin-top: 20px; font-style: italic; color: #ddd;">Descripción de la foto 1</p>
+                </div>
+
+            </div>
         </section>
 
-        <section id="slide8">
+<section id="slide8">
             <div class="split-container">
                 <div class="imagen-lado">
-                    <img src="https://placehold.co/600x400/000/fff?text=Futuro" class="img-marco">
+                    
+                    <div class="video-wrapper">
+                        
+                        <img src="img8.jpg" 
+                             style="width: 100%; height: 100%; object-fit: cover; display: block;">
+
+                        <div class="panel-oculto">
+                            <video class="video-personal" onclick="toggleVideo(this)">
+                                <source src="vid8.mp4" type="video/mp4">
+                            </video>
+                        </div>
+
+                        <div class="lengueta" onclick="toggleLengueta(this)">
+                            <span>➡️</span>
+                        </div>
+
+                    </div>
+
                 </div>
                 <div class="texto-lado">
-                    <h2>Hacia el Futuro</h2>
-                    <p>La mirada puesta en nuevos horizontes. ¿Cuál es el siguiente gran paso?</p>
+                    <h2>01/09/25</h2>
+                    <p>No tengo palabras para lo que fue ese dia, sin darme cuenta no fue lo nada mas lo que hicimos ese dia, si no que entendi desde el dia anterior al darme mi cajita y vinieras conmigo que el mejor regalo que pude tener fue tener a alguien tan maravillosa a mi lado disfrutando de lo mismo que yo hago valorando cada instante conmigo y haciendo de cada uno de mis dias una maravilla con unicamente tu presencia en vida dia con dia, lo unico que pedi por mi cumpleaños aunque no te lo haya dicho es que estemos juntos toda la vida. sea asi o no que sepas que te amo una vida y nunca cambiara eso gracias por este dia :,o <3</p>
+                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 10px;">
+                        (Abre la pestaña para ver la foto)
+                    </p>
                 </div>
             </div>
         </section>
 
         <section id="slide9">
-            <h1 style="font-size: 4rem; opacity: 0.2;">❝</h1>
-            <h2 style="font-style: italic;">"El único modo de hacer un gran trabajo es amar lo que haces."</h2>
-            <p>- Steve Jobs</p>
+            <div class="split-container">
+                
+                <div class="texto-lado">
+                    <h2>El presente</h2>
+                    <p style="font-size: 0.7rem; opacity: 0.6;">Despues de ver todo perdi un poco la cuenta de los meses ya que me agarro nostalgia :,v</p>
+                    <p>Y llegamos al presente, ya 2 años y 4 meses juntos. llevamos tanto tiempo sin hacer mas que amarnos mas y mas dia con dia:D. Lo que quiero decir es de verdad gracias por hacerme feliz y poder disfrutar cada instante cuando es contigo. Realmente amo que llevemos tanto tiempo y lo unico que le pido a dios es que me deje vivir mi vida a tu lado, vivir la juntos, sonreir juntos, llorar juntos, pelear juntos, pero al final del dia regresar a vernos con el mismo amor impregnado en esos ojitos tan lindos que tienes. solo deseo que seas mia y esto quiero que sea muestra de mi promesa, eternamente este album estara aqui y quiero que se quede aqui para cada vez que lo vea saber lo tanto que amo todo de ti Daniela Stacy Maguiña Vasquez futura señora mia, te amo mucho cariño <3</p>
+                </div>
+
+                <div class="imagen-lado">
+                    
+                    <div class="visor-carrusel">
+                        <button class="btn-nav-carrusel prev" onclick="moverCarrusel9(-1)">❮</button>
+                        
+                        <img id="img-carrusel-9" src="car1.jpg">
+                        
+                        <button class="btn-nav-carrusel next" onclick="moverCarrusel9(1)">❯</button>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="slide10">
@@ -408,43 +673,251 @@ s<!DOCTYPE html>
             <div style="margin-top: 30px;">
                 <a href="#" class="btn">Instagram</a>
                 <a href="#" class="btn">Email</a>
-                <a href="#" class="btn">LinkedIn</a>
             </div>
         </section>
 
     </main>
 
-    <audio id="audioFondo" loop>
-        <source src="sparks.mp3" type="audio/mp3">
-    </audio>
+    <audio id="audioFondo" loop></audio>
 
     <button id="botonMusica" class="btn-musica" onclick="toggleMusica()">
-        <span>toca aca</span>
+        <span>🎵</span>
     </button>
 
     <script>
-        var audio = document.getElementById("audioFondo");
-        var boton = document.getElementById("botonMusica");
-        var reproduciendo = false;
+    // 1. LISTA DE CANCIONES
+    const listaCanciones = [
+        "sparks.mp3", "hoh.mp3", "heather.mp3", "beautifulboy.mp3",
+        "apocalypse.mp3", "herewithme.mp3", "silence.mp3",
+        "amtrak.mp3", "cha.mp3", "star.mp3"
+    ];
 
-        // Intentar bajar el volumen un poco para que no asuste (50%)
-        audio.volume = 0.5;
+    // 2. CONFIGURACIÓN DE AUDIO
+    var audioFondo = document.getElementById("audioFondo");
+    var boton = document.getElementById("botonMusica");
+    var reproduciendo = false;
+    var fadeInterval; 
 
-        function toggleMusica() {
-            if (reproduciendo) {
-                audio.pause();
-                boton.innerHTML = "🔇"; // Cambia texto
-                boton.style.opacity = "0.5"; // Se hace semitransparente
-                reproduciendo = false;
-            } else {
-                audio.play();
-                boton.innerHTML = "🔊"; // Cambia texto
-                boton.style.opacity = "1"; // Se ilumina
-                reproduciendo = true;
-            }
+    // Elegir canción aleatoria
+    const indiceAleatorio = Math.floor(Math.random() * listaCanciones.length);
+    audioFondo.src = listaCanciones[indiceAleatorio]; 
+    console.log("Canción elegida: " + listaCanciones[indiceAleatorio]);
+    audioFondo.volume = 1.0; 
+
+    // 3. FUNCIONES (DEFINIDAS ANTES DE USARLAS)
+    function toggleMusica() {
+        if (reproduciendo) {
+            audioFondo.pause();
+            boton.innerHTML = "🔇";
+            boton.style.opacity = "0.5";
+            reproduciendo = false;
+        } else {
+            audioFondo.play();
+            boton.innerHTML = "🔊";
+            boton.style.opacity = "1";
+            reproduciendo = true;
         }
+    }
+
+    function transicionVolumen(objetivo) {
+        if (!reproduciendo) return;
+        if (fadeInterval) clearInterval(fadeInterval);
+
+        fadeInterval = setInterval(() => {
+            let actual = audioFondo.volume;
+            let diferencia = objetivo - actual;
+
+            if (Math.abs(diferencia) < 0.05) {
+                audioFondo.volume = objetivo;
+                clearInterval(fadeInterval);
+            } else {
+                if (actual < objetivo) {
+                    audioFondo.volume += 0.02; 
+                } else {
+                    audioFondo.volume -= 0.02;
+                }
+            }
+        }, 50);
+    }
+
+    // Funciones para onclick en HTML
+    function toggleVideo(video) {
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    }
+
+    function girarFoto(elemento) {
+        const tarjeta = elemento.querySelector('.flip-card-inner');
+        tarjeta.classList.toggle('girada');
+    }
+
+    function toggleLengueta(boton) {
+        const wrapper = boton.parentElement;
+        wrapper.classList.toggle('mostrar-foto');
+
+        const icono = boton.querySelector('span');
+        if (wrapper.classList.contains('mostrar-foto')) {
+            icono.innerHTML = '⬅️';
+        } else {
+            icono.innerHTML = '➡️';
+        }
+    }
+
+    // 4. LÓGICA AUTOMÁTICA DE VIDEOS
+    const videosPagina = document.querySelectorAll('.video-personal');
+
+    videosPagina.forEach(video => {
+        video.addEventListener('play', () => {
+            transicionVolumen(0.2); 
+            videosPagina.forEach(v => {
+                if(v !== video) v.pause();
+            });
+        });
+
+        video.addEventListener('pause', () => {
+            transicionVolumen(1.0); 
+        });
+
+        video.addEventListener('ended', () => {
+            transicionVolumen(1.0); 
+        });
+    });
+
+    // 5. DETECCIÓN DE SCROLL (VISIBILIDAD)
+    const secciones = document.querySelectorAll('section');
+    const puntos = document.querySelectorAll('.nav-dot');
+
+    const observer = new IntersectionObserver((entradas) => {
+        entradas.forEach(entrada => {
+            const seccion = entrada.target;
+            
+            if (entrada.isIntersecting) {
+                puntos.forEach(punto => punto.classList.remove('activo'));
+                const idSeccion = seccion.getAttribute('id');
+                const puntoActivo = document.querySelector(`.nav-dot[href="#${idSeccion}"]`);
+                if (puntoActivo) puntoActivo.classList.add('activo');
+
+                seccion.classList.add('visible'); 
+            } else {
+                seccion.classList.remove('visible');
+                const videoEnSeccion = seccion.querySelector('video');
+                if(videoEnSeccion && !videoEnSeccion.paused) {
+                    videoEnSeccion.pause();
+                }
+            }
+        });
+    }, { threshold: 0.5 });
+
+    secciones.forEach(seccion => observer.observe(seccion));
+
+// --- LÓGICA DEL REGALO Y CARRUSEL ---
+    let clicksRegalo = 0;
+    let indiceCarrusel = 0;
+    
+    // CONFIGURACIÓN: Pon aquí tus 3 fotos y sus textos
+    const datosCarrusel = [
+        { img: "gat1.jpg", texto: "una invacion de maricones D:" },
+        { img: "gat2.jpg", texto: "akjfLWIJFA" },
+        { img: "gat3.jpg", texto: "20 años de buena suerte 🍀🍀" },
+        { img: "gat4.jpg", texto: "c nero 🗿" },
+        { img: "gat5.jpg", texto: "mango modo locura DDD:" },
+        { img: "gat6.jpg", texto: "20 años mas de buena suerte si te salio tu fyp y no te lo mandaron :OOOOOOO" }
+    ];
+
+    function golpearRegalo() {
+        const caja = document.getElementById('caja-regalo');
+        clicksRegalo++;
+
+        // Efecto visual de temblor
+        caja.classList.remove('temblando');
+        void caja.offsetWidth; // Truco para reiniciar animación
+        caja.classList.add('temblando');
+
+        // Al tercer click, se abre
+        if (clicksRegalo >= 3) {
+            setTimeout(() => {
+                caja.style.display = 'none'; // Adiós regalo
+                const carrusel = document.getElementById('carrusel-sorpresa');
+                carrusel.style.display = 'flex'; // Hola carrusel
+                cargarSlide(0); // Carga la primera info
+            }, 300);
+        }
+    }
+
+    function cargarSlide(index) {
+        const imagen = document.getElementById('img-carrusel');
+        const texto = document.getElementById('txt-carrusel');
+        
+        // Si no tienes las fotos reales aun, usa placeholders (BORRA ESTO CUANDO TENGAS LAS FOTOS)
+        if (!datosCarrusel[index].img.includes("http") && !datosCarrusel[index].img.includes("jpg")) {
+             imagen.src = `https://placehold.co/600x400/333/fff?text=Foto+${index+1}`; 
+        } else {
+             // Esta es la línea que usa tus fotos reales
+             imagen.src = datosCarrusel[index].img;
+        }
+        
+        texto.innerText = datosCarrusel[index].texto;
+    }
+
+    function moverCarrusel(direccion) {
+        indiceCarrusel += direccion;
+        
+        // Loop infinito (si llega al final, vuelve al principio)
+        if (indiceCarrusel < 0) {
+            indiceCarrusel = datosCarrusel.length - 1;
+        } else if (indiceCarrusel >= datosCarrusel.length) {
+            indiceCarrusel = 0;
+        }
+        
+        cargarSlide(indiceCarrusel);
+    }
+
+// --- LÓGICA DEL CARRUSEL DIAPOSITIVA 9 ---
+    let indiceCarrusel9 = 0;
+
+    // CONFIGURA AQUÍ TUS FOTOS PARA EL SLIDE 9
+    const datosCarrusel9 = [
+        { img: "car1.jpg"},
+        { img: "car2.jpg"},
+        { img: "car3.jpg"},
+        { img: "car4.jpg"},
+        { img: "car5.jpg"},
+        { img: "car6.jpg"},
+        { img: "car7.jpg"},
+        { img: "car8.jpg"}
+
+    ];
+
+    function cargarSlide9(index) {
+        const imagen = document.getElementById('img-carrusel-9');
+        const texto = document.getElementById('txt-carrusel-9');
+        
+        // Carga la imagen (usa placeholder si no es un archivo real o url)
+        if (!datosCarrusel9[index].img.includes(".")) {
+             imagen.src = `https://placehold.co/600x400/111/fff?text=Slide9+Foto+${index+1}`; 
+        } else {
+             imagen.src = datosCarrusel9[index].img;
+        }
+        
+        texto.innerText = datosCarrusel9[index].texto;
+    }
+
+    function moverCarrusel9(direccion) {
+        indiceCarrusel9 += direccion;
+        
+        if (indiceCarrusel9 < 0) {
+            indiceCarrusel9 = datosCarrusel9.length - 1;
+        } else if (indiceCarrusel9 >= datosCarrusel9.length) {
+            indiceCarrusel9 = 0;
+        }
+        
+        cargarSlide9(indiceCarrusel9);
+    }
+
     </script>
 
 </body>
 </html>
-
